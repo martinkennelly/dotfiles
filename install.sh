@@ -81,4 +81,6 @@ else
   python3 install.py --all
 fi
 
+# Restore vim symbolic link
+sudo ln -s /usr/bin/vi /usr/bin/vim
 echo -e "\n=========================\n++++++++ COMPLETED +++++++\n========================="
