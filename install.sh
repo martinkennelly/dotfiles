@@ -3,6 +3,7 @@ sudo apt update && sudo apt -y upgrade && sudo apt install gcc
 FILEDIR=$(cd "$(dirname "$0")"; pwd)
 rm -f ~/.bashrc
 rm -f ~/.vimrc
+rm -f ~/.vim
 
 # Distribute bash/vim rcs
 cp "$FILEDIR/.bashrc" ~/.bashrc
