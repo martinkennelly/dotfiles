@@ -242,7 +242,7 @@ let g:multi_cursor_skip_key='<C-x>'
 let g:multi_cursor_quit_key='<Esc>'
 
 " Python specific
-au BufNewFile,BufRead *.py
+au BufRead *.py
      \ set tabstop=4
      \ set softtabstop=4
      \ set shiftwidth=4
