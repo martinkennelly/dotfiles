@@ -89,11 +89,10 @@ Plugin 'godlygeek/tabular'
 Plugin 'kana/vim-operator-user'
 Plugin 'rhysd/vim-clang-format'
 Plugin 'sbdchd/neoformat'
-
 Plugin 'SirVer/ultisnips'
 Plugin 'honza/vim-snippets'
 Plugin 'kracejic/snippetinabox.vim'
-
+Plugin 'pearofducks/ansible-vim'
 Plugin 'joereynolds/gtags-scope'
 Plugin 'sheerun/vim-polyglot'
 Plugin 'rhysd/devdocs.vim'
