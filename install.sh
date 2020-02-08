@@ -40,7 +40,7 @@ cd vim
             --enable-gui=gtk2 \
             --enable-cscope \
 	   --prefix=/usr/local
-make VIMRUNTIMEDIR=/usr/local/share/vim/vim81
+make VIMRUNTIMEDIR=/usr/local/share/vim/vim82
 sudo make install
 
 # Let everyone know vim is installed
