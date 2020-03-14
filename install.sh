@@ -73,7 +73,7 @@ make clean && make clean_clang
 
 # Install YCM & ask user whether C support or other lang
 cd ~/.vim/bundle/YouCompleteMe
-read -p 'Enter c for c based syntax checking otherwise something else for other languages' langvar
+read -p 'Enter c for c based syntax checking otherwise something else for other languages:  ' langvar
 if [ $langvar == "c" ]; then
   echo -e "\nYou choose C based language\n"
   python3 install.py --clang-completer
