@@ -58,7 +58,7 @@ sudo apt-get -y install build-essential libclang-3.9-dev libncurses-dev libz-dev
 
 # Get lua version
 LUAVERSION="$(vim --version | grep -o "lua[0-9].[0-9]")"
-sudo apt install lib$LUAVERSION-dev $LUAVERSION g++
+sudo apt -y install lib$LUAVERSION-dev $LUAVERSION g++
 
 # Install plugins
 vim +PluginInstall +qall
