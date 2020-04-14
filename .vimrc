@@ -98,10 +98,15 @@ Plugin 'joereynolds/gtags-scope'
 Plugin 'sheerun/vim-polyglot'
 Plugin 'rhysd/devdocs.vim'
 Plugin 'tpope/vim-eunuch'
+Plugin 'fatih/vim-go'
 
 call vundle#end()
 
 filetype plugin indent on
+
+"============= VIM-GO =================
+let g:go_fmt_command = "goimports"
+let g:go_auto_type_info = 1
 
 "============= AIRLINE ================
 let g:airline#extensions#tabline#enabled = 1
