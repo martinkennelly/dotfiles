@@ -1,5 +1,6 @@
 #!/bin/bash
 # Experimental
+
 sudo apt update && sudo apt -y upgrade && sudo apt install gcc
 FILEDIR=$(cd "$(dirname "$0")"; pwd)
 rm -f ~/.bashrc
