@@ -1,90 +1,51 @@
-#!/bin/bash
-# Experimental
+#!/usr/bin/env bash
+set -e
+_HERE=$(dirname "$(readlink --canonicalize "$BASH_SOURCE")")
+EMAIL="mkennell@redhat.com"
+NAME="Martin Kennelly"
 
-
-sudo apt update && sudo apt -y upgrade && sudo apt install gcc
-FILEDIR=$(cd "$(dirname "$0")"; pwd)
-rm -f ~/.bashrc
-rm -f ~/.vimrc
-rm -f ~/.vim
-
-# Distribute bash/vim rcs
-cp "$FILEDIR/.bashrc" ~/.bashrc
-cp "$FILEDIR/.vimrc" ~/.vimrc
-
-# Get vundle if not present
-if [ ! -d "~/.vim/bundle/Vundle.vim" ]; then
-  mkdir -p ~/.vim/bundle
-  git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+## config vim
+echo "config vim"
+if ! [ -d ~/.vim/autoload ]; then
+  mkdir -p ~/.vim/autoload ~/.vim/bundle && \
+    curl --location --show-error --silent --output ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim &> /dev/null
 fi
 
-# Get files to compile vim
-sudo apt -y install libncurses5-dev libgnome2-dev libgnomeui-dev \
-  libgtk2.0-dev libatk1.0-dev libbonoboui2-dev \
-  libcairo2-dev libx11-dev libxpm-dev libxt-dev python-dev \
-  python3-dev ruby-dev lua5.1 liblua5.1-dev libperl-dev git
-
-# Remove vim
-sudo apt -y remove vim vim-runtime gvim
-
-# Get python config dir name.
-LASTDIR="$(ls /usr/lib/python3.* | grep -E 'config-[0-9a-z]')"
-git clone https://github.com/vim/vim.git
-cd vim
-
-# Configure vim and attach py 3 config dir
-./configure --with-features=huge \
-            --enable-multibyte \
-	    --enable-rubyinterp=yes \
-	    --enable-python3interp=yes \
-	    --with-python3-config-dir=/usr/lib/python3.5/$LASTDIR \
-	    --enable-perlinterp=yes \
-	    --enable-luainterp=yes \
-            --enable-gui=gtk2 \
-            --enable-cscope \
-	   --prefix=/usr/local
-make VIMRUNTIMEDIR=/usr/local/share/vim/vim82
-sudo make install
-
-# Let everyone know vim is installed
-sudo update-alternatives --install /usr/bin/editor editor /usr/local/bin/vim 1
-sudo update-alternatives --set editor /usr/local/bin/vim
-sudo update-alternatives --install /usr/bin/vi vi /usr/local/bin/vim 1
-sudo update-alternatives --set vi /usr/local/bin/vim
-
-# Get pathogen
-mkdir -p ~/.vim/autoload ~/.vim/bundle && \
-curl -LSso ~/.vim/autoload/pathogen.vim https://tpo.pe/pathogen.vim
-
-# Get packages for color coded compilation
-sudo apt-get -y install build-essential libclang-3.9-dev libncurses-dev libz-dev cmake xz-utils libpthread-workqueue-dev
-
-# Get lua version
-LUAVERSION="$(vim --version | grep -o "lua[0-9].[0-9]")"
-sudo apt -y install lib$LUAVERSION-dev $LUAVERSION g++
-
-# Install plugins
-vim +PluginInstall +qall
-
-# Compile color coded
-cd ~/.vim/bundle/color_coded
-rm -f CMakeCache.txt
-mkdir build && cd build
-cmake ..
-make && make install
-make clean && make clean_clang
-
-# Install YCM & ask user whether C support or other lang
-cd ~/.vim/bundle/YouCompleteMe
-read -p 'Enter c for c based syntax checking otherwise something else for other languages:  ' langvar
-if [ $langvar == "c" ]; then
-  echo -e "\nYou choose C based language\n"
-  python3 install.py --clang-completer
-else
-  echo -e "\nYou choose go,rust,java,npm,node,cargo\n"
-  python3 install.py --all
+if ! [ -d ~/.vim/bundle/nerdtree ]; then
+  git clone https://github.com/scrooloose/nerdtree.git ~/.vim/bundle/nerdtree
 fi
 
-# Restore vim symbolic link
-sudo ln -s /usr/bin/vi /usr/bin/vim
-echo -e "\n=========================\n++++++++ COMPLETED +++++++\n========================="
+if ! [ -d ~/.vim/bundle/vim-go ]; then
+  git clone https://github.com/fatih/vim-go.git ~/.vim/bundle/vim-go
+fi
+
+cp "$_HERE/.vimrc" ~/.vimrc
+vim +GoInstallBinaries +qall
+# end config vim
+
+# config go
+echo "config go"
+go_ver=$(curl https://golang.org/VERSION?m=text 2> /dev/null)
+echo "installing $go_ver"
+go_file_path="/tmp/$go_ver.tar.gz"
+rm -f "$go_file_path"
+curl -LSso "$go_file_path" "https://dl.google.com/go/$go_ver.linux-amd64.tar.gz"
+sudo rm -rf /usr/local/go
+sudo tar -C /usr/local -xzf "$go_file_path"
+rm -f "$go_file_path"
+echo "PATH=$PATH:/usr/local/go/bin:$HOME/go/bin" >> ~/.bash_profile
+
+echo "$go_ver installed"
+# end config go
+
+# config git
+git config --global user.email "$EMAIL"
+git config --global user.name "$NAME"
+echo "git globals configured"
+
+# install KIND
+GO111MODULE="on" go get sigs.k8s.io/kind@latest
+echo "KIND installed"
+
+# install kubectl
+sudo curl --location --show-error --silent --output /usr/local/bin/kubectl "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" 2> /dev/null
