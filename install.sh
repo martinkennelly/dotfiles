@@ -48,3 +48,5 @@ echo "KIND installed"
 
 # install kubectl
 sudo curl --location --show-error --silent --output /usr/local/bin/kubectl "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" 2> /dev/null
+
+cp "_HERE/.bashrc" ~
