@@ -33,7 +33,7 @@ curl -LSso "$go_file_path" "https://dl.google.com/go/$go_ver.linux-amd64.tar.gz"
 sudo rm -rf /usr/local/go
 sudo tar -C /usr/local -xzf "$go_file_path"
 rm -f "$go_file_path"
-cp "_HERE/.profile" ~/
+cp "$_HERE/.profile" ~/
 echo "$go_ver installed"
 # end config go
 
