@@ -51,3 +51,6 @@ sudo curl --location --show-error --silent --output /usr/local/bin/kubectl "http
 sudo chmod +x /usr/local/bin/kubectl
 
 cp "_HERE/.bashrc" ~
+
+# install misc tools
+sudo dnf install -y ShellCheck
