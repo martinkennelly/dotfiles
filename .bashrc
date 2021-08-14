@@ -15,7 +15,7 @@ alias b='vim ~/.bashrc'
 alias tree='tree -C'
 alias lll='tree'
 alias filecount='find . -type f | wc -l'
-alias sudo="sudo "
+alias sudo="sudo -EH --preserve-env=PATH "
 alias clr=clear
 alias grep='grep --color=auto'
 alias egrep='egrep --color=auto'
@@ -35,6 +35,7 @@ alias meminfo='free -m -t -l'
 alias psmem='ps auxf | sort -nr -k 4 | head -10'
 alias pscpu='ps auxf | sort -nr -k 3 | head -10'
 alias updateycm='cd ~/.vim/bundle/YouCompleteMe && git pull && git pull --recurse-submodules && ./install.py --clang-completer'
+alias k='kubectl'
 
 parse_git_bg() {
   if [[ $(git status -s 2> /dev/null) ]]; then
